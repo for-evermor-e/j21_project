@@ -1,0 +1,42 @@
+WHITESPACE = _{ " " | "\t" }  // NEWLINE?
+
+COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" }
+
+semicolon = _{ ";" }
+
+port_type = { "weight" | "input" | "bias" | "output" }
+
+vec_type = { "int" | "float" }
+
+alpha = { 'a'..'z' | 'A'..'Z' | "_" }
+
+digit = { '0'..'9' }
+
+nonzero = { '1'..'9' }
+
+id = ${ alpha ~ (alpha | digit)* }
+
+int = ${ (nonzero+ ~ digit*) | "0" }
+
+float = ${ digit+ ~ "." ~ digit* }
+
+vector = ${ vec_type ~ "[" ~ WHITESPACE* ~ int ~ WHITESPACE* ~ "," ~ WHITESPACE* ~ int ~ WHITESPACE* ~ "]" }
+
+mac = ${ "MAC" ~ "(" ~ WHITESPACE* ~ id ~ WHITESPACE* ~ "," ~ WHITESPACE* ~ id ~ WHITESPACE* ~ "," ~ WHITESPACE* ~ id ~ WHITESPACE* ~ ")" }
+
+op = { plus | mul }
+    plus = { "+" }
+    mul = { "*" }
+
+decl = { port_type ~ id ~ "=" ~ vector ~ semicolon }
+
+wire = { port_type ~ id ~ "=" ~ mac ~ semicolon }
+
+program = {
+    SOI ~
+    NEWLINE* ~
+    (decl | wire)? ~
+    (NEWLINE* ~ (decl | wire))* ~
+    NEWLINE* ~
+    EOI
+}

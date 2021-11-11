@@ -1,0 +1,162 @@
+import "primitives/std.lib";
+component main() -> () {
+    cells {
+        @external(1) M_W_x = std_mem_d1(32, 6, 32);
+        @external(1) y = std_mem_d2(32, 4, 5, 32, 32);
+        @external(1) x = std_mem_d2(32, 6, 5, 32, 32);
+        @external(1) W = std_mem_d2(32, 4, 6, 32, 32);
+        @external(1) b = std_mem_d2(32, 4, 5, 32, 32);
+        MAC_accumulator = std_add(32);
+        MAC_multiplier = std_mult_pipe(32);
+        MAC_adder = std_add(32);
+        W_idx0 = std_reg(32);
+        M_W_x_idx = std_reg(32);
+        x_idx1 = std_reg(32);
+        W_idx1 = std_reg(32);
+        b_idx1 = std_reg(32);
+        b_idx0 = std_reg(32);
+        W_idx0_adder = std_add(32);
+        M_W_x_idx_adder = std_add(32);
+        x_idx1_adder = std_add(32);
+        W_idx1_adder = std_add(32);
+        W_idx1_lt = std_lt(32);
+        x_idx1_lt = std_lt(32);
+        W_idx0_lt = std_lt(32);
+        M_W_x_idx_lt = std_lt(32);
+    }
+    wires {
+        group cond_W_idx0 {
+            W_idx0_lt.left = W_idx0.out;
+            W_idx0_lt.right = 32'd4;
+            cond_W_idx0[done] = 1'd1;
+        }
+        group cond_W_idx1 {
+            W_idx1_lt.left = W_idx1.out;
+            W_idx1_lt.right = 32'd6;
+            cond_W_idx1[done] = 1'd1;
+        }
+        group cond_x_idx1 {
+            x_idx1_lt.left = x_idx1.out;
+            x_idx1_lt.right = 32'd5;
+            cond_x_idx1[done] = 1'd1;
+        }
+        group cond_M_W_x_idx {
+            M_W_x_idx_lt.left = M_W_x_idx.out;
+            M_W_x_idx_lt.right = 32'd6;
+            cond_M_W_x_idx[done] = 1'd1;
+        }
+        group incr_W_idx0 {
+            W_idx0_adder.left = W_idx0.out;
+            W_idx0_adder.right = 32'd1;
+            W_idx0.write_en = 1'd1;
+            W_idx0.in = W_idx0_adder.out;
+            incr_W_idx0[done] = W_idx0.done;
+        }
+        group incr_W_idx1 {
+            W_idx1_adder.left = W_idx1.out;
+            W_idx1_adder.right = 32'd1;
+            W_idx1.write_en = 1'd1;
+            W_idx1.in = W_idx1_adder.out;
+            incr_W_idx1[done] = W_idx1.done;
+        }
+        group incr_x_idx1 {
+            x_idx1_adder.left = x_idx1.out;
+            x_idx1_adder.right = 32'd1;
+            x_idx1.write_en = 1'd1;
+            x_idx1.in = x_idx1_adder.out;
+            incr_x_idx1[done] = x_idx1.done;
+        }
+        group incr_M_W_x_idx {
+            M_W_x_idx_adder.left = M_W_x_idx.out;
+            M_W_x_idx_adder.right = 32'd1;
+            M_W_x_idx.write_en = 1'd1;
+            M_W_x_idx.in = M_W_x_idx_adder.out;
+            incr_M_W_x_idx[done] = M_W_x_idx.done;
+        }
+        group init_W_idx0 {
+            W_idx0.write_en = 1'd1;
+            W_idx0.in = 32'd0;
+            init_W_idx0[done] = W_idx0.done;
+        }
+        group init_W_idx1 {
+            W_idx1.write_en = 1'd1;
+            W_idx1.in = 32'd0;
+            init_W_idx1[done] = W_idx1.done;
+        }
+        group init_x_idx1 {
+            x_idx1.write_en = 1'd1;
+            x_idx1.in = 32'd0;
+            init_x_idx1[done] = x_idx1.done;
+        }
+        group init_M_W_x_idx {
+            M_W_x_idx.write_en = 1'd1;
+            M_W_x_idx.in = 32'd0;
+            init_M_W_x_idx[done] = M_W_x_idx.done;
+        }
+        group product_W_x {
+            M_W_x.write_en = MAC_multiplier.done;
+            MAC_multiplier.left = W.read_data;
+            MAC_multiplier.right = x.read_data;
+            MAC_multiplier.go = !MAC_multiplier.done ? 1'd1;
+            M_W_x.write_data = MAC_multiplier.out;
+            product_W_x[done] = M_W_x.done;
+            W.addr0 = W_idx0.out;
+            W.addr1 = W_idx1.out;
+            x.addr0 = W_idx1.out;
+            x.addr1 = x_idx1.out;
+            M_W_x.addr0 = W_idx1.out;
+        }
+        group accumulate_M_W_x {
+            y.write_en = 1'd1;
+            MAC_accumulator.left = y.read_data;
+            MAC_accumulator.right = M_W_x.read_data;
+            y.write_data = MAC_accumulator.out;
+            accumulate_M_W_x[done] = y.done;
+            M_W_x.addr0 = M_W_x_idx.out;
+            y.addr0 = W_idx0.out;
+            y.addr1 = x_idx1.out;
+        }
+        group plus_y_b {
+            y.write_en = 1'd1;
+            MAC_adder.left = y.read_data;
+            MAC_adder.right = b.read_data;
+            y.write_data = MAC_adder.out;
+            plus_y_b[done] = y.done;
+            b.addr0 = W_idx0.out;
+            b.addr1 = x_idx1.out;
+            y.addr0 = W_idx0.out;
+            y.addr1 = x_idx1.out;
+        }
+    }
+    control {
+        seq {
+            init_W_idx0;
+            while W_idx0_lt.out with cond_W_idx0 {
+                seq {
+                    init_x_idx1;
+                    while x_idx1_lt.out with cond_x_idx1 {
+                        seq {
+                            init_W_idx1;
+                            while W_idx1_lt.out with cond_W_idx1 {
+                                seq {
+                                    product_W_x;
+                                    incr_W_idx1;
+                                }
+                            }
+                            init_M_W_x_idx;
+                            while M_W_x_idx_lt.out with cond_M_W_x_idx {
+                                seq {
+                                    accumulate_M_W_x;
+                                    incr_M_W_x_idx;
+                                }
+                            }
+                            plus_y_b;
+                            incr_x_idx1;
+                        }
+                    }
+                    incr_W_idx0;
+                }
+            }
+        }
+    }
+}

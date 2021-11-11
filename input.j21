@@ -1,0 +1,9 @@
+weight W   =     int[4, 6];
+
+
+input x = int[6, 5];
+bias b = int[   4,   5];
+
+output y = MAC(W,    x ,     b);
+
+/* Comments: All vectors must have the same vec_type. */
