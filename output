@@ -1,0 +1,289 @@
+Printing Tokens:
+
+Start { rule: program, pos: Position { pos: 0 } }
+Start { rule: decl, pos: Position { pos: 0 } }
+Start { rule: port_type, pos: Position { pos: 0 } }
+End { rule: port_type, pos: Position { pos: 6 } }
+Start { rule: id, pos: Position { pos: 7 } }
+Start { rule: alpha, pos: Position { pos: 7 } }
+End { rule: alpha, pos: Position { pos: 8 } }
+End { rule: id, pos: Position { pos: 8 } }
+Start { rule: vector, pos: Position { pos: 17 } }
+Start { rule: vec_type, pos: Position { pos: 17 } }
+End { rule: vec_type, pos: Position { pos: 20 } }
+Start { rule: int, pos: Position { pos: 21 } }
+Start { rule: nonzero, pos: Position { pos: 21 } }
+End { rule: nonzero, pos: Position { pos: 22 } }
+End { rule: int, pos: Position { pos: 22 } }
+Start { rule: int, pos: Position { pos: 24 } }
+Start { rule: nonzero, pos: Position { pos: 24 } }
+End { rule: nonzero, pos: Position { pos: 25 } }
+End { rule: int, pos: Position { pos: 25 } }
+End { rule: vector, pos: Position { pos: 26 } }
+End { rule: decl, pos: Position { pos: 27 } }
+Start { rule: decl, pos: Position { pos: 30 } }
+Start { rule: port_type, pos: Position { pos: 30 } }
+End { rule: port_type, pos: Position { pos: 35 } }
+Start { rule: id, pos: Position { pos: 36 } }
+Start { rule: alpha, pos: Position { pos: 36 } }
+End { rule: alpha, pos: Position { pos: 37 } }
+End { rule: id, pos: Position { pos: 37 } }
+Start { rule: vector, pos: Position { pos: 40 } }
+Start { rule: vec_type, pos: Position { pos: 40 } }
+End { rule: vec_type, pos: Position { pos: 43 } }
+Start { rule: int, pos: Position { pos: 44 } }
+Start { rule: nonzero, pos: Position { pos: 44 } }
+End { rule: nonzero, pos: Position { pos: 45 } }
+End { rule: int, pos: Position { pos: 45 } }
+Start { rule: int, pos: Position { pos: 47 } }
+Start { rule: nonzero, pos: Position { pos: 47 } }
+End { rule: nonzero, pos: Position { pos: 48 } }
+End { rule: int, pos: Position { pos: 48 } }
+End { rule: vector, pos: Position { pos: 49 } }
+End { rule: decl, pos: Position { pos: 50 } }
+Start { rule: decl, pos: Position { pos: 51 } }
+Start { rule: port_type, pos: Position { pos: 51 } }
+End { rule: port_type, pos: Position { pos: 55 } }
+Start { rule: id, pos: Position { pos: 56 } }
+Start { rule: alpha, pos: Position { pos: 56 } }
+End { rule: alpha, pos: Position { pos: 57 } }
+End { rule: id, pos: Position { pos: 57 } }
+Start { rule: vector, pos: Position { pos: 60 } }
+Start { rule: vec_type, pos: Position { pos: 60 } }
+End { rule: vec_type, pos: Position { pos: 63 } }
+Start { rule: int, pos: Position { pos: 67 } }
+Start { rule: nonzero, pos: Position { pos: 67 } }
+End { rule: nonzero, pos: Position { pos: 68 } }
+End { rule: int, pos: Position { pos: 68 } }
+Start { rule: int, pos: Position { pos: 72 } }
+Start { rule: nonzero, pos: Position { pos: 72 } }
+End { rule: nonzero, pos: Position { pos: 73 } }
+End { rule: int, pos: Position { pos: 73 } }
+End { rule: vector, pos: Position { pos: 74 } }
+End { rule: decl, pos: Position { pos: 75 } }
+Start { rule: wire, pos: Position { pos: 77 } }
+Start { rule: port_type, pos: Position { pos: 77 } }
+End { rule: port_type, pos: Position { pos: 83 } }
+Start { rule: id, pos: Position { pos: 84 } }
+Start { rule: alpha, pos: Position { pos: 84 } }
+End { rule: alpha, pos: Position { pos: 85 } }
+End { rule: id, pos: Position { pos: 85 } }
+Start { rule: mac, pos: Position { pos: 88 } }
+Start { rule: id, pos: Position { pos: 92 } }
+Start { rule: alpha, pos: Position { pos: 92 } }
+End { rule: alpha, pos: Position { pos: 93 } }
+End { rule: id, pos: Position { pos: 93 } }
+Start { rule: id, pos: Position { pos: 98 } }
+Start { rule: alpha, pos: Position { pos: 98 } }
+End { rule: alpha, pos: Position { pos: 99 } }
+End { rule: id, pos: Position { pos: 99 } }
+Start { rule: id, pos: Position { pos: 106 } }
+Start { rule: alpha, pos: Position { pos: 106 } }
+End { rule: alpha, pos: Position { pos: 107 } }
+End { rule: id, pos: Position { pos: 107 } }
+End { rule: mac, pos: Position { pos: 108 } }
+End { rule: wire, pos: Position { pos: 109 } }
+Start { rule: EOI, pos: Position { pos: 167 } }
+End { rule: EOI, pos: Position { pos: 167 } }
+End { rule: program, pos: Position { pos: 167 } }
+
+
+Printing all elements in ID_HashMap:
+
+{"W": AboutID { port_type: weight, vec: Vector { vec_type: int, dim0: 4, dim1: 6 } }, "x": AboutID { port_type: input, vec: Vector { vec_type: int, dim0: 6, dim1: 5 } }, "b": AboutID { port_type: bias, vec: Vector { vec_type: int, dim0: 4, dim1: 5 } }}
+"W"
+"x"
+"b"
+
+
+Tests for printing ASTNode:
+
+Wire { port_type: output, name: "y", mac: MAC { weight: "W", input: "x", bias: "b" } }
+output
+"y"
+MAC { weight: "W", input: "x", bias: "b" }
+"W"
+"x"
+"b"
+Some(AboutID { port_type: weight, vec: Vector { vec_type: int, dim0: 4, dim1: 6 } })
+4
+
+
+Printing all nodes:
+
+Decl { port_type: weight, name: "W", vec: Vector { vec_type: int, dim0: 4, dim1: 6 } }
+Decl { port_type: input, name: "x", vec: Vector { vec_type: int, dim0: 6, dim1: 5 } }
+Decl { port_type: bias, name: "b", vec: Vector { vec_type: int, dim0: 4, dim1: 5 } }
+Wire { port_type: output, name: "y", mac: MAC { weight: "W", input: "x", bias: "b" } }
+
+
+Printing Comps:
+
+Comp { op: mult, left: "W", right: "x", out: "M_W_x" }
+Comp { op: add, left: "M_W_x", right: "b", out: "y" }
+
+
+Generated Calyx:
+
+import "primitives/std.lib";
+component main() -> () {
+    cells {
+        @external(1) M_W_x = std_mem_d1(32, 6, 32);
+        @external(1) y = std_mem_d2(32, 4, 5, 32, 32);
+        @external(1) x = std_mem_d2(32, 6, 5, 32, 32);
+        @external(1) W = std_mem_d2(32, 4, 6, 32, 32);
+        @external(1) b = std_mem_d2(32, 4, 5, 32, 32);
+        MAC_accumulator = std_add(32);
+        MAC_multiplier = std_mult_pipe(32);
+        MAC_adder = std_add(32);
+        W_idx0 = std_reg(32);
+        M_W_x_idx = std_reg(32);
+        x_idx1 = std_reg(32);
+        W_idx1 = std_reg(32);
+        b_idx1 = std_reg(32);
+        b_idx0 = std_reg(32);
+        W_idx0_adder = std_add(32);
+        M_W_x_idx_adder = std_add(32);
+        x_idx1_adder = std_add(32);
+        W_idx1_adder = std_add(32);
+        W_idx1_lt = std_lt(32);
+        x_idx1_lt = std_lt(32);
+        W_idx0_lt = std_lt(32);
+        M_W_x_idx_lt = std_lt(32);
+    }
+    wires {
+        group cond_W_idx0 {
+            W_idx0_lt.left = W_idx0.out;
+            W_idx0_lt.right = 32'd4;
+            cond_W_idx0[done] = 1'd1;
+        }
+        group cond_W_idx1 {
+            W_idx1_lt.left = W_idx1.out;
+            W_idx1_lt.right = 32'd6;
+            cond_W_idx1[done] = 1'd1;
+        }
+        group cond_x_idx1 {
+            x_idx1_lt.left = x_idx1.out;
+            x_idx1_lt.right = 32'd5;
+            cond_x_idx1[done] = 1'd1;
+        }
+        group cond_M_W_x_idx {
+            M_W_x_idx_lt.left = M_W_x_idx.out;
+            M_W_x_idx_lt.right = 32'd6;
+            cond_M_W_x_idx[done] = 1'd1;
+        }
+        group incr_W_idx0 {
+            W_idx0_adder.left = W_idx0.out;
+            W_idx0_adder.right = 32'd1;
+            W_idx0.write_en = 1'd1;
+            W_idx0.in = W_idx0_adder.out;
+            incr_W_idx0[done] = W_idx0.done;
+        }
+        group incr_W_idx1 {
+            W_idx1_adder.left = W_idx1.out;
+            W_idx1_adder.right = 32'd1;
+            W_idx1.write_en = 1'd1;
+            W_idx1.in = W_idx1_adder.out;
+            incr_W_idx1[done] = W_idx1.done;
+        }
+        group incr_x_idx1 {
+            x_idx1_adder.left = x_idx1.out;
+            x_idx1_adder.right = 32'd1;
+            x_idx1.write_en = 1'd1;
+            x_idx1.in = x_idx1_adder.out;
+            incr_x_idx1[done] = x_idx1.done;
+        }
+        group incr_M_W_x_idx {
+            M_W_x_idx_adder.left = M_W_x_idx.out;
+            M_W_x_idx_adder.right = 32'd1;
+            M_W_x_idx.write_en = 1'd1;
+            M_W_x_idx.in = M_W_x_idx_adder.out;
+            incr_M_W_x_idx[done] = M_W_x_idx.done;
+        }
+        group init_W_idx0 {
+            W_idx0.write_en = 1'd1;
+            W_idx0.in = 32'd0;
+            init_W_idx0[done] = W_idx0.done;
+        }
+        group init_W_idx1 {
+            W_idx1.write_en = 1'd1;
+            W_idx1.in = 32'd0;
+            init_W_idx1[done] = W_idx1.done;
+        }
+        group init_x_idx1 {
+            x_idx1.write_en = 1'd1;
+            x_idx1.in = 32'd0;
+            init_x_idx1[done] = x_idx1.done;
+        }
+        group init_M_W_x_idx {
+            M_W_x_idx.write_en = 1'd1;
+            M_W_x_idx.in = 32'd0;
+            init_M_W_x_idx[done] = M_W_x_idx.done;
+        }
+        group product_W_x {
+            M_W_x.write_en = MAC_multiplier.done;
+            MAC_multiplier.left = W.read_data;
+            MAC_multiplier.right = x.read_data;
+            MAC_multiplier.go = !MAC_multiplier.done ? 1'd1;
+            M_W_x.write_data = MAC_multiplier.out;
+            product_W_x[done] = M_W_x.done;
+            W.addr0 = W_idx0.out;
+            W.addr1 = W_idx1.out;
+            x.addr0 = W_idx1.out;
+            x.addr1 = x_idx1.out;
+            M_W_x.addr0 = W_idx1.out;
+        }
+        group accumulate_M_W_x {
+            y.write_en = 1'd1;
+            MAC_accumulator.left = y.read_data;
+            MAC_accumulator.right = M_W_x.read_data;
+            y.write_data = MAC_accumulator.out;
+            accumulate_M_W_x[done] = y.done;
+            M_W_x.addr0 = M_W_x_idx.out;
+            y.addr0 = W_idx0.out;
+            y.addr1 = x_idx1.out;
+        }
+        group plus_y_b {
+            y.write_en = 1'd1;
+            MAC_adder.left = y.read_data;
+            MAC_adder.right = b.read_data;
+            y.write_data = MAC_adder.out;
+            plus_y_b[done] = y.done;
+            b.addr0 = W_idx0.out;
+            b.addr1 = x_idx1.out;
+            y.addr0 = W_idx0.out;
+            y.addr1 = x_idx1.out;
+        }
+    }
+    control {
+        seq {
+            init_W_idx0;
+            while W_idx0_lt.out with cond_W_idx0 {
+                seq {
+                    init_x_idx1;
+                    while x_idx1_lt.out with cond_x_idx1 {
+                        seq {
+                            init_W_idx1;
+                            while W_idx1_lt.out with cond_W_idx1 {
+                                seq {
+                                    product_W_x;
+                                    incr_W_idx1;
+                                }
+                            }
+                            init_M_W_x_idx;
+                            while M_W_x_idx_lt.out with cond_M_W_x_idx {
+                                seq {
+                                    accumulate_M_W_x;
+                                    incr_M_W_x_idx;
+                                }
+                            }
+                            plus_y_b;
+                            incr_x_idx1;
+                        }
+                    }
+                    incr_W_idx0;
+                }
+            }
+        }
+    }
+}
